@@ -1,0 +1,5 @@
+{
+  "name": "AI Photo Restorer",
+  "description": "Old photo restoration app using AI to colorize, denoise, and sharpen images.",
+  "requestFramePermissions": []
+}
