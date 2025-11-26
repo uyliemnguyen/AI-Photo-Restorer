@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ImageUploader } from './components/ImageUploader';
 import { RestorationControls } from './components/RestorationControls';
 import { ImageComparison } from './components/ImageComparison';
@@ -14,6 +14,23 @@ function App() {
   const [restoredUrl, setRestoredUrl] = useState<string | null>(null);
   const [options, setOptions] = useState<RestorationOptions>(DEFAULT_OPTIONS);
   const [error, setError] = useState<string | null>(null);
+  
+  // Contact popover state
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const contactRef = useRef<HTMLDivElement>(null);
+
+  // Close contact popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (contactRef.current && !contactRef.current.contains(event.target as Node)) {
+        setIsContactOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleImageSelect = (selectedFile: File) => {
     const objectUrl = URL.createObjectURL(selectedFile);
@@ -78,7 +95,39 @@ function App() {
           <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-400">
             <a href="#" className="hover:text-white transition-colors">Features</a>
             <a href="#" className="hover:text-white transition-colors">How it works</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
+            
+            {/* Contact Dropdown */}
+            <div className="relative" ref={contactRef}>
+              <button 
+                onClick={() => setIsContactOpen(!isContactOpen)} 
+                className={`hover:text-white transition-colors focus:outline-none ${isContactOpen ? 'text-white' : ''}`}
+              >
+                Contact
+              </button>
+              
+              {isContactOpen && (
+                <div className="absolute right-0 top-full mt-4 w-72 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-5 z-50 animate-in fade-in zoom-in-95 duration-200 ring-1 ring-white/10">
+                  <div className="flex flex-col gap-4">
+                    <div>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider font-bold block mb-1">Developer</span>
+                      <p className="text-white font-medium text-base">Liem Nguyen</p>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 uppercase tracking-wider font-bold block mb-1">Email</span>
+                      <a 
+                        href="mailto:uyliemnguyen15@gmail.com" 
+                        className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium break-all block"
+                      >
+                        uyliemnguyen15@gmail.com
+                      </a>
+                    </div>
+                  </div>
+                  
+                  {/* Decorative pointer arrow */}
+                  <div className="absolute -top-1.5 right-6 w-3 h-3 bg-slate-900 border-t border-l border-slate-700 rotate-45"></div>
+                </div>
+              )}
+            </div>
           </nav>
         </div>
       </header>
