@@ -92,9 +92,9 @@ function App() {
             </div>
             <span className="font-bold text-xl tracking-tight text-white">PhotoRestorer</span>
           </div>
-          <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-400">
-            <a href="#" className="hover:text-white transition-colors">Features</a>
-            <a href="#" className="hover:text-white transition-colors">How it works</a>
+          <nav className="flex items-center gap-4 md:gap-6 text-sm font-medium text-slate-400">
+            <a href="#" className="hidden md:block hover:text-white transition-colors">Features</a>
+            <a href="#" className="hidden md:block hover:text-white transition-colors">How it works</a>
             
             {/* Contact Dropdown */}
             <div className="relative" ref={contactRef}>
